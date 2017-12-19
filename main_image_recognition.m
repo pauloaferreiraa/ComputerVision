@@ -11,6 +11,6 @@ function [img_out] = main_image_recognition(param1,param2,param3,param4)
         case 4
             img_out = imnoise(param1,param2,param3,param4);
             
-
+        
     end
 end
