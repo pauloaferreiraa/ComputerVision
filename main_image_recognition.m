@@ -6,29 +6,34 @@ function [img_out] = main_image_recognition(param1,param2,param3,param4)
         case 1
             img = imread(param1);
             img_out = rgb2gray(img);
-        case 2
-            %No caso da segmentação ser do tipo kmeans 
-            if param2=='kmeans'
-                col = double(param1(:));
-                clusters = kmeans(col,2);
-                img_out = zeros(size(param1));
-                for i=1:2
-                    inds=find(clusters==i);
-                    meanval = mean(col(inds));
-                    img_out(inds) = meanval;
-                end
-            end
-            if param2=='otsus'
-                level = graythresh(param1);
-                img_out= im2bw(param1,level);
-            end
+            
             
         case 3
-            if(param2=='salt & pepper')
-                img_out = imnoise(param1,param2,param3);
+            if strcmp(param2,'segmentation') % segmentação da imagem
+                img_out = segmentation(param1,param3);
+            end
+            
+            if strcmp(param2,'process') %para o caso de ser filtro sobel ou prewitt
+                processimage(param1,param3)
             end
             
         case 4
-            img_out = imnoise(param1,param2,param3,param4);
+            if strcmp(param2,'noise') %salt & pepper
+                    img_out = addnoise(param1,param3,param4);
+            end
+            
+            if strcmp(param2,'process') %average
+                    img_out = addnoise(param1,param3,param4)
+            end
+            
+            
+        case 5
+            if strcmp(param2,'process') %gaussian filter
+                img_out=processimage(param1,param3,param4,param5)
+            end
+            
+            if strcmp(param2,'noise') %gaussian noise
+                img_out = addnoise(param1,param3,param4,param5);
+            end
     end
 end
